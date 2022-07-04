@@ -3,21 +3,40 @@ from pygame.locals import *
 import sys
 from src import turtles
 
-pygame.init()
-
-background = pygame.image.load('img/backgrounds/beach_bg.png')
-screen = pygame.display.set_mode((800, 395))
-screen.blit(background, (-400, -5))
-sprites = pygame.sprite.Group()
-leo = turtles.Leo(400, 150)
-sprites.add(leo)
+SCREEN_SIZE = (800, 395)
+BACKGROUNDS = [pygame.image.load('img/backgrounds/beach_bg.png')]
 
 
-while True:
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
+def add_sprite(sprite_group, sprites):
+    for sprite in sprites:
+        sprite_group.add(sprite)
 
-    sprites.draw(screen)
-    pygame.display.flip()
+
+def screen_draw(screen, sprites_group):
+    screen.blit(BACKGROUNDS[0], (-400, -5))
+    sprites_group.draw(screen)
+    pygame.display.update()
+
+
+def run_game():
+    pygame.init()
+    clock = pygame.time.Clock()
+    screen = pygame.display.set_mode(SCREEN_SIZE)
+    sprites_group = pygame.sprite.Group()
+    leo = turtles.Leo(150, 220)
+    sprites = [leo]
+    add_sprite(sprites_group, sprites)
+
+    while True:
+        clock.tick(5)
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+
+        sprites_group.update()
+        screen_draw(screen, sprites_group)
+
+
+if __name__ == '__main__':
+    run_game()
