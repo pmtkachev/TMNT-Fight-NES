@@ -1,10 +1,10 @@
 import pygame
 from pygame.locals import *
 import sys
-from src import turtles
+from src.player import Player
+from src.background import Background
 
 SCREEN_SIZE = (800, 395)
-BACKGROUNDS = [pygame.image.load('img/backgrounds/beach_bg.png')]
 
 
 def add_sprite(sprite_group, sprites):
@@ -13,9 +13,36 @@ def add_sprite(sprite_group, sprites):
 
 
 def screen_draw(screen, sprites_group):
-    screen.blit(BACKGROUNDS[0], (-400, -5))
     sprites_group.draw(screen)
     pygame.display.update()
+
+
+def check_events(player, background):
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+
+        if event.type == KEYDOWN:
+            if not player.isjump:
+                if event.key == K_a:
+                    player.wleft = True
+                elif event.key == K_d:
+                    player.wright = True
+                elif event.key == K_s:
+                    player.down = True
+                elif event.key == K_w:
+                    player.wright, player.wleft = False, False
+                    player.down = False
+                    player.isjump = True
+
+        if event.type == KEYUP:
+            if event.key == K_a:
+                player.wleft = False
+            elif event.key == K_d:
+                player.wright = False
+            elif event.key == K_s:
+                player.down = False
 
 
 def run_game():
@@ -23,17 +50,15 @@ def run_game():
     clock = pygame.time.Clock()
     screen = pygame.display.set_mode(SCREEN_SIZE)
     sprites_group = pygame.sprite.Group()
-    leo = turtles.Leo(150, 220)
-    sprites = [leo]
+    player = Player()
+    background = Background()
+    sprites = [background, player]
     add_sprite(sprites_group, sprites)
 
     while True:
-        clock.tick(5)
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
+        clock.tick(7)
 
+        check_events(player, background)
         sprites_group.update()
         screen_draw(screen, sprites_group)
 
