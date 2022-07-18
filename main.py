@@ -35,6 +35,12 @@ def check_events(player, background):
                     player.wright, player.wleft = False, False
                     player.down = False
                     player.isjump = True
+                elif event.key == K_SPACE:
+                    player.block = True
+                elif event.key == K_n:
+                    player.fight_arm = True
+                elif event.key == K_m:
+                    player.fight_foot = True
 
         if event.type == KEYUP:
             if event.key == K_a:
@@ -43,6 +49,12 @@ def check_events(player, background):
                 player.wright = False
             elif event.key == K_s:
                 player.down = False
+            elif event.key == K_n:
+                player.fight_arm = False
+            elif event.key == K_m:
+                player.fight_foot = False
+            elif event.key == K_SPACE:
+                player.block = False
 
 
 def run_game():
