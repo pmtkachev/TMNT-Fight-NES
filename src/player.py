@@ -32,13 +32,15 @@ class Player(pygame.sprite.Sprite):
         self.image = self.images[self.index]
         self.rect.center = self.x, self.y
         if self.wright:
-            if self.x <= 730:
-                self.x += self.speed
-                self.image = self.images_wright[self.index]
-        elif self.wleft:
-            if self.x >= 90:
+            self.x += self.speed
+            self.image = self.images_wright[self.index]
+            if self.x >= 730:
                 self.x -= self.speed
-                self.image = self.images_wleft[self.index]
+        elif self.wleft:
+            self.x -= self.speed
+            self.image = self.images_wleft[self.index]
+            if self.x <= 70:
+                self.x += self.speed
         elif self.down and self.fight_arm:
             self.image = self.image_arm_down
             self.fight_arm = False
