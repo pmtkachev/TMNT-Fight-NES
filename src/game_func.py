@@ -18,7 +18,6 @@ def check_events(player):
                 elif event.key == K_s:
                     player.down = True
                 elif event.key == K_w:
-                    player.wright, player.wleft = False, False
                     player.down = False
                     player.isjump = True
                 elif event.key == K_SPACE:

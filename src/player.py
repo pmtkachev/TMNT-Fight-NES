@@ -9,11 +9,14 @@ class Player(pygame.sprite.Sprite):
         self.images_wleft = [pygame.image.load(f'img/sprites/turtles/leo/leo_wleft_{i}.png') for i in range(1, 4)]
         self.image_sit = pygame.image.load(f'img/sprites/turtles/leo/leo_sit.png')
         self.image_jump = pygame.image.load(f'img/sprites/turtles/leo/leo_jump.png')
+        self.image_jump_flip = [pygame.image.load(f'img/sprites/turtles/leo/leo_jump_flip_{i}.png') for i in
+                                range(0, 3)]
         self.image_arm = pygame.image.load(f'img/sprites/turtles/leo/leo_arm.png')
         self.image_arm_down = pygame.image.load(f'img/sprites/turtles/leo/leo_arm_down.png')
         self.image_foot = pygame.image.load(f'img/sprites/turtles/leo/leo_foot.png')
         self.image_foot_down = pygame.image.load(f'img/sprites/turtles/leo/leo_foot_down.png')
         self.image_block = pygame.image.load(f'img/sprites/turtles/leo/leo_block.png')
+        self.image_block_down = pygame.image.load(f'img/sprites/turtles/leo/leo_block_down.png')
         self.index = 0
         self.image = self.images[self.index]
         self.x, self.y = 150, 260
@@ -31,11 +34,39 @@ class Player(pygame.sprite.Sprite):
             self.index = 0
         self.image = self.images[self.index]
         self.rect.center = self.x, self.y
-        if self.wright:
+        if self.wright and self.isjump:
+            self.image = self.image_jump_flip[self.index]
+            self.y -= (1 / 2) * self.m * (self.speed ** 2)
+            self.x += 15
+            self.speed -= 5
+            if self.speed < 0:
+                self.m = -1
+
+            if self.speed == -20:
+                self.isjump = False
+                self.speed = 15
+                self.m = 1
+            if self.x >= 730:
+                self.x -= 15
+        elif self.wright:
             self.x += self.speed
             self.image = self.images_wright[self.index]
             if self.x >= 730:
                 self.x -= self.speed
+        elif self.wleft and self.isjump:
+            self.image = self.image_jump_flip[self.index]
+            self.y -= (1 / 2) * self.m * (self.speed ** 2)
+            self.x -= 15
+            self.speed -= 5
+            if self.speed < 0:
+                self.m = -1
+
+            if self.speed == -20:
+                self.isjump = False
+                self.speed = 15
+                self.m = 1
+            if self.x <= 70:
+                self.x += 15
         elif self.wleft:
             self.x -= self.speed
             self.image = self.images_wleft[self.index]
@@ -47,6 +78,8 @@ class Player(pygame.sprite.Sprite):
         elif self.down and self.fight_foot:
             self.image = self.image_foot_down
             self.fight_foot = False
+        elif self.down and self.block:
+            self.image = self.image_block_down
         elif self.down:
             self.image = self.image_sit
         elif self.isjump:
