@@ -2,6 +2,10 @@ import pygame
 from pygame.locals import *
 import sys
 
+hud = pygame.image.load('img/sprites/hud.png')
+pygame.font.init()
+font = pygame.font.Font(None, 72)
+
 
 def check_events(player):
     for event in pygame.event.get():
@@ -10,6 +14,8 @@ def check_events(player):
             sys.exit()
 
         if event.type == KEYDOWN:
+            if event.key == K_x:
+                player.life -= 1
             if not player.isjump:
                 if event.key == K_a:
                     player.wleft = True
@@ -47,8 +53,18 @@ def add_sprite(sprite_group, sprites):
         sprite_group.add(sprite)
 
 
-def screen_draw(screen, sprites_group):
+def screen_draw(screen, sprites_group, player, seconds):
     sprites_group.draw(screen)
+    screen.blit(hud, (10, 10, 175, 50))
+    life_img = pygame.image.load('img/sprites/life_bar.png')
+    for life in range(player.life):
+        life_img_rect = life_img.get_rect()
+        life_img_rect.x = 70 + 11 * life
+        life_img_rect.y = 30
+        screen.blit(life_img, life_img_rect)
+    screen.blit(player.portrait, player.portrait_rect)
+    text = font.render(str(int(seconds)), False, (255, 255, 255))
+    screen.blit(text, (373, 13))
     pygame.display.update()
 
 

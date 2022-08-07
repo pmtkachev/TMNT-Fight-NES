@@ -4,6 +4,10 @@ import pygame
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super(Player, self).__init__()
+        self.life = 10
+        self.portrait = pygame.image.load('img/sprites/turtles/leo/leo_portrait.png')
+        self.portrait_rect = self.portrait.get_rect()
+        self.portrait_rect.x, self.portrait_rect.y = 10, 10
         self.images = [pygame.image.load(f'img/sprites/turtles/leo/leo_stay_{i}.png') for i in range(1, 4)]
         self.images_wright = [pygame.image.load(f'img/sprites/turtles/leo/leo_wright_{i}.png') for i in range(1, 4)]
         self.images_wleft = [pygame.image.load(f'img/sprites/turtles/leo/leo_wleft_{i}.png') for i in range(1, 4)]
