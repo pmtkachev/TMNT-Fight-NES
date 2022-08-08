@@ -1,5 +1,9 @@
 import pygame
 
+pygame.mixer.init()
+fight_arm_sound = pygame.mixer.Sound('snd/fight_arm.mp3')
+fight_foot_sound = pygame.mixer.Sound('snd/fight_foot.mp3')
+
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -17,8 +21,10 @@ class Player(pygame.sprite.Sprite):
                                 range(0, 3)]
         self.image_arm = pygame.image.load(f'img/sprites/turtles/leo/leo_arm.png')
         self.image_arm_down = pygame.image.load(f'img/sprites/turtles/leo/leo_arm_down.png')
+        self.image_arm_jump = pygame.image.load(f'img/sprites/turtles/leo/leo_arm_jump.png')
         self.image_foot = pygame.image.load(f'img/sprites/turtles/leo/leo_foot.png')
         self.image_foot_down = pygame.image.load(f'img/sprites/turtles/leo/leo_foot_down.png')
+        self.image_foot_jump = pygame.image.load(f'img/sprites/turtles/leo/leo_foot_jump.png')
         self.image_block = pygame.image.load(f'img/sprites/turtles/leo/leo_block.png')
         self.image_block_down = pygame.image.load(f'img/sprites/turtles/leo/leo_block_down.png')
         self.index = 0
@@ -77,9 +83,11 @@ class Player(pygame.sprite.Sprite):
             if self.x <= 70:
                 self.x += self.speed
         elif self.down and self.fight_arm:
+            fight_arm_sound.play()
             self.image = self.image_arm_down
             self.fight_arm = False
         elif self.down and self.fight_foot:
+            fight_foot_sound.play()
             self.image = self.image_foot_down
             self.fight_foot = False
         elif self.down and self.block:
@@ -99,9 +107,11 @@ class Player(pygame.sprite.Sprite):
                 self.m = 1
 
         elif self.fight_arm:
+            fight_arm_sound.play()
             self.image = self.image_arm
             self.fight_arm = False
         elif self.fight_foot:
+            fight_foot_sound.play()
             self.image = self.image_foot
             self.fight_foot = False
         elif self.block:

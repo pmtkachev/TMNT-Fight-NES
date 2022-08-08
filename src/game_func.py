@@ -5,6 +5,7 @@ import sys
 hud = pygame.image.load('img/sprites/hud.png')
 pygame.font.init()
 font = pygame.font.Font(None, 72)
+jump_sound = pygame.mixer.Sound('snd/jump.mp3')
 
 
 def check_events(player):
@@ -25,6 +26,7 @@ def check_events(player):
                     player.down = True
                 elif event.key == K_w:
                     player.down = False
+                    jump_sound.play()
                     player.isjump = True
                 elif event.key == K_SPACE:
                     player.block = True
