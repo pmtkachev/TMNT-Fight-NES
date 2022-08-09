@@ -38,6 +38,16 @@ class Player(pygame.sprite.Sprite):
         self.fight_arm_down, self.fight_foot_down = False, False
         self.block = False
 
+    def jump(self):
+        self.y -= (1 / 2) * self.m * (self.speed ** 2)
+        self.speed -= 5
+        if self.speed < 0:
+            self.m = -1
+        if self.speed == -20:
+            self.isjump = False
+            self.speed = 15
+            self.m = 1
+
     def update(self):
         self.index += 1
         if self.index >= len(self.images):
@@ -46,16 +56,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.center = self.x, self.y
         if self.wright and self.isjump:
             self.image = self.image_jump_flip[self.index]
-            self.y -= (1 / 2) * self.m * (self.speed ** 2)
+            self.jump()
             self.x += 15
-            self.speed -= 5
-            if self.speed < 0:
-                self.m = -1
-
-            if self.speed == -20:
-                self.isjump = False
-                self.speed = 15
-                self.m = 1
             if self.x >= 730:
                 self.x -= 15
         elif self.wright:
@@ -65,16 +67,8 @@ class Player(pygame.sprite.Sprite):
                 self.x -= self.speed
         elif self.wleft and self.isjump:
             self.image = self.image_jump_flip[self.index]
-            self.y -= (1 / 2) * self.m * (self.speed ** 2)
+            self.jump()
             self.x -= 15
-            self.speed -= 5
-            if self.speed < 0:
-                self.m = -1
-
-            if self.speed == -20:
-                self.isjump = False
-                self.speed = 15
-                self.m = 1
             if self.x <= 70:
                 self.x += 15
         elif self.wleft:
@@ -96,15 +90,7 @@ class Player(pygame.sprite.Sprite):
             self.image = self.image_sit
         elif self.isjump:
             self.image = self.image_jump
-            self.y -= (1 / 2) * self.m * (self.speed ** 2)
-            self.speed -= 5
-            if self.speed < 0:
-                self.m = -1
-
-            if self.speed == -20:
-                self.isjump = False
-                self.speed = 15
-                self.m = 1
+            self.jump()
 
         elif self.fight_arm:
             fight_arm_sound.play()

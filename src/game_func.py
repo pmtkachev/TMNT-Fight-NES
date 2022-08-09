@@ -2,12 +2,14 @@ import pygame
 from pygame.locals import *
 import sys
 
+# add sound, font, HUD
 hud = pygame.image.load('img/sprites/hud.png')
 pygame.font.init()
 font = pygame.font.Font(None, 72)
 jump_sound = pygame.mixer.Sound('snd/jump.mp3')
 
 
+# check events
 def check_events(player):
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -50,26 +52,35 @@ def check_events(player):
                 player.block = False
 
 
+# add sprites in group
 def add_sprite(sprite_group, sprites):
     for sprite in sprites:
         sprite_group.add(sprite)
 
 
-def screen_draw(screen, sprites_group, player, seconds):
-    sprites_group.draw(screen)
-    screen.blit(hud, (10, 10, 175, 50))
+# draw life
+def draw_lives(player, screen):
     life_img = pygame.image.load('img/sprites/life_bar.png')
     for life in range(player.life):
         life_img_rect = life_img.get_rect()
         life_img_rect.x = 70 + 11 * life
         life_img_rect.y = 30
         screen.blit(life_img, life_img_rect)
+
+
+# draw screen
+def screen_draw(screen, sprites_group, player, seconds, shredder):
+    sprites_group.draw(screen)
+    screen.blit(hud, (10, 10, 175, 50))
+    draw_lives(player, screen)
     screen.blit(player.portrait, player.portrait_rect)
-    text = font.render(str(int(seconds)), False, (255, 255, 255))
+    screen.blit(shredder.portrait, shredder.portrait_rect)
+    text = font.render(str(int(seconds)).zfill(2), False, (255, 255, 255))
     screen.blit(text, (373, 13))
     pygame.display.update()
 
 
+# update background
 def update_background(player, background):
     if player.x <= 75 and player.wleft:
         background.x += 20

@@ -1,4 +1,5 @@
 from src.player import Player
+from src.enemy import Enemy
 from src.background import Background
 from src.game_func import *
 
@@ -13,7 +14,8 @@ def run_game():
     sprites_group = pygame.sprite.Group()
     background = Background()
     player = Player()
-    sprites = [background, player]
+    shredder = Enemy()
+    sprites = [background, player, shredder]
     add_sprite(sprites_group, sprites)
     seconds = 60
     music_1.play()
@@ -23,7 +25,7 @@ def run_game():
         check_events(player)
         update_background(player, background)
         sprites_group.update()
-        screen_draw(screen, sprites_group, player, seconds)
+        screen_draw(screen, sprites_group, player, seconds, shredder)
         seconds -= 0.13
 
 
