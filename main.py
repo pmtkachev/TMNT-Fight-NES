@@ -3,7 +3,7 @@ from src.enemy import Enemy
 from src.background import Background
 from src.game_func import *
 
-SCREEN_SIZE = (800, 395)
+SCREEN_SIZE = (800, 430)
 music_1 = pygame.mixer.Sound('snd/music_1.mp3')
 
 
@@ -22,7 +22,7 @@ def run_game():
 
     while True:
         clock.tick(7)
-        check_events(player)
+        check_events(player, seconds)
         update_background(player, background)
         sprites_group.update()
         screen_draw(screen, sprites_group, player, seconds, shredder)

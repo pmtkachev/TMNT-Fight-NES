@@ -29,7 +29,7 @@ class Player(pygame.sprite.Sprite):
         self.image_block_down = pygame.image.load(f'img/sprites/turtles/leo/leo_block_down.png')
         self.index = 0
         self.image = self.images[self.index]
-        self.x, self.y = 150, 260
+        self.x, self.y = 150, 310
         self.rect = self.image.get_rect()
         self.speed, self.m = 15, 1
         self.wright, self.wleft = False, False
@@ -76,10 +76,18 @@ class Player(pygame.sprite.Sprite):
             self.image = self.images_wleft[self.index]
             if self.x <= 70:
                 self.x += self.speed
+        elif self.isjump and self.fight_arm:
+            fight_arm_sound.play()
+            self.image = self.image_arm_jump
+            self.fight_arm = False
         elif self.down and self.fight_arm:
             fight_arm_sound.play()
             self.image = self.image_arm_down
             self.fight_arm = False
+        elif self.isjump and self.fight_foot:
+            fight_foot_sound.play()
+            self.image = self.image_foot_jump
+            self.fight_foot = False
         elif self.down and self.fight_foot:
             fight_foot_sound.play()
             self.image = self.image_foot_down

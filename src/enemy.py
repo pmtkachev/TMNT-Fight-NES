@@ -8,8 +8,7 @@ class Enemy(pygame.sprite.Sprite):
         self.portrait = pygame.image.load('img/sprites/enemies/shredder/shred_portrait.png')
         self.portrait_rect = self.portrait.get_rect()
         self.portrait_rect.x, self.portrait_rect.y = 740, 10
-        self.image = pygame.image.load('img/sprites/enemies/shredder/shred_stay_0.png')
-        # self.images = [pygame.image.load(f'img/sprites/turtles/leo/leo_stay_{i}.png') for i in range(1, 4)]
+        self.images = [pygame.image.load(f'img/sprites/enemies/shredder/shred_stay_{i}.png') for i in range(0, 3)]
         # self.images_wright = [pygame.image.load(f'img/sprites/turtles/leo/leo_wright_{i}.png') for i in range(1, 4)]
         # self.images_wleft = [pygame.image.load(f'img/sprites/turtles/leo/leo_wleft_{i}.png') for i in range(1, 4)]
         # self.image_sit = pygame.image.load(f'img/sprites/turtles/leo/leo_sit.png')
@@ -24,9 +23,9 @@ class Enemy(pygame.sprite.Sprite):
         # self.image_foot_jump = pygame.image.load(f'img/sprites/turtles/leo/leo_foot_jump.png')
         # self.image_block = pygame.image.load(f'img/sprites/turtles/leo/leo_block.png')
         # self.image_block_down = pygame.image.load(f'img/sprites/turtles/leo/leo_block_down.png')
-        # self.index = 0
-        # self.image = self.images[self.index]
-        self.x, self.y = 650, 252
+        self.index = 0
+        self.image = self.images[self.index]
+        self.x, self.y = 650, 298
         self.rect = self.image.get_rect()
         # self.speed, self.m = 15, 1
         # self.wright, self.wleft = False, False
@@ -46,10 +45,10 @@ class Enemy(pygame.sprite.Sprite):
     #         self.m = 1
 
     def update(self):
-        # self.index += 1
-        # if self.index >= len(self.images):
-        #     self.index = 0
-        # self.image = self.images[self.index]
+        self.index += 1
+        if self.index >= len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
         self.rect.center = self.x, self.y
         # if self.wright and self.isjump:
         #     self.image = self.image_jump_flip[self.index]

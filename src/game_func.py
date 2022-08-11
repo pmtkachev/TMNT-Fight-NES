@@ -10,7 +10,9 @@ jump_sound = pygame.mixer.Sound('snd/jump.mp3')
 
 
 # check events
-def check_events(player):
+def check_events(player, seconds):
+    if seconds <= 0:
+        print('Game over')
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
@@ -19,6 +21,17 @@ def check_events(player):
         if event.type == KEYDOWN:
             if event.key == K_x:
                 player.life -= 1
+            if event.key == K_w:
+                player.down = False
+                jump_sound.play()
+                player.isjump = True
+            elif event.key == K_SPACE:
+                player.block = True
+            elif event.key == K_n:
+                player.fight_arm = True
+            elif event.key == K_m:
+                player.fight_foot = True
+
             if not player.isjump:
                 if event.key == K_a:
                     player.wleft = True
@@ -26,16 +39,6 @@ def check_events(player):
                     player.wright = True
                 elif event.key == K_s:
                     player.down = True
-                elif event.key == K_w:
-                    player.down = False
-                    jump_sound.play()
-                    player.isjump = True
-                elif event.key == K_SPACE:
-                    player.block = True
-                elif event.key == K_n:
-                    player.fight_arm = True
-                elif event.key == K_m:
-                    player.fight_foot = True
 
         if event.type == KEYUP:
             if event.key == K_a:
@@ -86,7 +89,7 @@ def update_background(player, background):
         background.x += 20
     elif player.x >= 720 and player.wright:
         background.x -= 20
-    if background.x == 0:
+    if background.x >= 640:
         background.x -= 20
-    elif background.x == -720:
+    elif background.x <= 160:
         background.x += 20
