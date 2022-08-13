@@ -10,17 +10,17 @@ jump_sound = pygame.mixer.Sound('snd/jump.mp3')
 
 
 # check events
-def check_events(player, seconds):
-    if seconds <= 0:
-        print('Game over')
+def check_events(player, seconds, enemy):
+    # if seconds <= 0:
+    #     print('Game over')
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
 
         if event.type == KEYDOWN:
-            if event.key == K_x:
-                player.life -= 1
+            # if event.key == K_x:
+            #     player.life -= 1
             if event.key == K_w:
                 player.down = False
                 jump_sound.play()
@@ -32,27 +32,59 @@ def check_events(player, seconds):
             elif event.key == K_m:
                 player.fight_foot = True
 
+            if event.key == K_UP:
+                enemy.down = False
+                jump_sound.play()
+                enemy.isjump = True
+            elif event.key == K_c:
+                enemy.block = True
+            elif event.key == K_z:
+                enemy.fight_arm = True
+            elif event.key == K_x:
+                enemy.fight_foot = True
+
             if not player.isjump:
                 if event.key == K_a:
                     player.wleft = True
-                elif event.key == K_d:
+                if event.key == K_d:
                     player.wright = True
-                elif event.key == K_s:
+                if event.key == K_s:
                     player.down = True
+
+            if not enemy.isjump:
+                if event.key == K_LEFT:
+                    enemy.wleft = True
+                elif event.key == K_RIGHT:
+                    enemy.wright = True
+                elif event.key == K_DOWN:
+                    enemy.down = True
 
         if event.type == KEYUP:
             if event.key == K_a:
                 player.wleft = False
-            elif event.key == K_d:
+            if event.key == K_d:
                 player.wright = False
-            elif event.key == K_s:
+            if event.key == K_s:
                 player.down = False
-            elif event.key == K_n:
+            if event.key == K_n:
                 player.fight_arm = False
-            elif event.key == K_m:
+            if event.key == K_m:
                 player.fight_foot = False
-            elif event.key == K_SPACE:
+            if event.key == K_SPACE:
                 player.block = False
+
+            if event.key == K_LEFT:
+                enemy.wleft = False
+            if event.key == K_RIGHT:
+                enemy.wright = False
+            if event.key == K_DOWN:
+                enemy.down = False
+            if event.key == K_1:
+                enemy.fight_arm = False
+            if event.key == K_2:
+                enemy.fight_foot = False
+            if event.key == K_c:
+                enemy.block = False
 
 
 # add sprites in group
@@ -84,10 +116,11 @@ def screen_draw(screen, sprites_group, player, seconds, shredder):
 
 
 # update background
-def update_background(player, background):
-    if player.x <= 75 and player.wleft:
+def update_background(player, background, enemy):
+    print(enemy.x)
+    if (player.x <= 75 and player.wleft) or (enemy.x <= 80 and enemy.wleft):
         background.x += 20
-    elif player.x >= 720 and player.wright:
+    elif (player.x >= 720 and player.wright) or (enemy.x >= 720 and enemy.wright):
         background.x -= 20
     if background.x >= 640:
         background.x -= 20

@@ -22,8 +22,8 @@ def run_game():
 
     while True:
         clock.tick(7)
-        check_events(player, seconds)
-        update_background(player, background)
+        check_events(player, seconds, shredder)
+        update_background(player, background, shredder)
         sprites_group.update()
         screen_draw(screen, sprites_group, player, seconds, shredder)
         seconds -= 0.13

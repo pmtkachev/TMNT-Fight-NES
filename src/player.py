@@ -54,6 +54,7 @@ class Player(pygame.sprite.Sprite):
             self.index = 0
         self.image = self.images[self.index]
         self.rect.center = self.x, self.y
+
         if self.wright and self.isjump:
             self.image = self.image_jump_flip[self.index]
             self.jump()
@@ -65,6 +66,7 @@ class Player(pygame.sprite.Sprite):
             self.image = self.images_wright[self.index]
             if self.x >= 730:
                 self.x -= self.speed
+
         elif self.wleft and self.isjump:
             self.image = self.image_jump_flip[self.index]
             self.jump()
