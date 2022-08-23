@@ -5,22 +5,26 @@ import sys
 # add sound, font, HUD
 hud = pygame.image.load('img/sprites/hud.png')
 pygame.font.init()
-font = pygame.font.Font(None, 72)
+font = pygame.font.Font('fnt/pixel.ttf', 52)
+font_name = pygame.font.Font('fnt/pixel.ttf', 16)
 jump_sound = pygame.mixer.Sound('snd/jump.mp3')
 
 
 # check events
 def check_events(player, seconds, enemy):
-    # if seconds <= 0:
-    #     print('Game over')
+    if seconds <= 0:
+        print('Game over')
+        pygame.quit()
+        sys.exit(0)
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
-            sys.exit()
+            sys.exit(0)
 
         if event.type == KEYDOWN:
-            # if event.key == K_x:
-            #     player.life -= 1
+            if event.key == K_x:
+                player.life -= 10
+                # enemy.life -= 10
             if event.key == K_w:
                 player.down = False
                 jump_sound.play()
@@ -93,31 +97,29 @@ def add_sprite(sprite_group, sprites):
         sprite_group.add(sprite)
 
 
-# draw life
-def draw_lives(player, screen):
-    life_img = pygame.image.load('img/sprites/life_bar.png')
-    for life in range(player.life):
-        life_img_rect = life_img.get_rect()
-        life_img_rect.x = 70 + 11 * life
-        life_img_rect.y = 30
-        screen.blit(life_img, life_img_rect)
+def draw_lives(player, screen, shredder):
+
+    pygame.draw.rect(screen, player.color_life, (70, 42, player.life * 1.75, 10))
+    shredder_rect = Rect(0, 42, shredder.life * 1.75, 10)
+    shredder_rect.right = 730
+    pygame.draw.rect(screen, shredder.color_life, shredder_rect)
 
 
 # draw screen
 def screen_draw(screen, sprites_group, player, seconds, shredder):
     sprites_group.draw(screen)
-    screen.blit(hud, (10, 10, 175, 50))
-    draw_lives(player, screen)
-    screen.blit(player.portrait, player.portrait_rect)
-    screen.blit(shredder.portrait, shredder.portrait_rect)
-    text = font.render(str(int(seconds)).zfill(2), False, (255, 255, 255))
-    screen.blit(text, (373, 13))
+    time = font.render(str(int(seconds)).zfill(2), False, (255, 255, 255))
+    name_player = font_name.render('LEO', False, (255, 255, 255))
+    name_enemy = font_name.render('SHREDDER', False, (255, 255, 255))
+    screen.blits(blit_sequence=((hud, (10, 10, 175, 50)), (player.portrait, player.portrait_rect),
+                                (shredder.portrait, shredder.portrait_rect), (time, (373, 5)),
+                                (name_player, (70, 20)), (name_enemy, (660, 20))))
+    draw_lives(player, screen, shredder)
     pygame.display.update()
 
 
 # update background
 def update_background(player, background, enemy):
-    print(enemy.x)
     if (player.x <= 75 and player.wleft) or (enemy.x <= 80 and enemy.wleft):
         background.x += 20
     elif (player.x >= 720 and player.wright) or (enemy.x >= 720 and enemy.wright):

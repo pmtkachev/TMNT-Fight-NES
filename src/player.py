@@ -8,7 +8,8 @@ fight_foot_sound = pygame.mixer.Sound('snd/fight_foot.mp3')
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super(Player, self).__init__()
-        self.life = 10
+        self.life = 100
+        self.color_life = (0, 255, 0)
         self.portrait = pygame.image.load('img/sprites/turtles/leo/leo_portrait.png')
         self.portrait_rect = self.portrait.get_rect()
         self.portrait_rect.x, self.portrait_rect.y = 10, 10
@@ -50,6 +51,10 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         self.index += 1
+        if self.life <= 60:
+            self.color_life = (255, 255, 0)
+        if self.life <= 30:
+            self.color_life = (255, 0, 0)
         if self.index >= len(self.images):
             self.index = 0
         self.image = self.images[self.index]
