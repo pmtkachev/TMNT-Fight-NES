@@ -1,31 +1,35 @@
 from src.player import Player
-from src.enemy import Enemy
+from src.shredder import Shredder
 from src.background import Background
 from src.game_func import *
 
 SCREEN_SIZE = (800, 430)
-music_1 = pygame.mixer.Sound('snd/music_1.mp3')
+
+# Choose area
+area_music = pygame.mixer.Sound('snd/music_1.mp3')
+area = pygame.image.load('img/backgrounds/zone_1.png')
 
 
 def run_game():
     pygame.init()
     clock = pygame.time.Clock()
-    screen = pygame.display.set_mode(SCREEN_SIZE)
+    window = pygame.display.set_mode(SCREEN_SIZE)
     sprites_group = pygame.sprite.Group()
-    background = Background()
+    background = Background(area)
     player = Player()
-    shredder = Enemy()
-    sprites = [background, player, shredder]
+    enemy = Shredder()
+    sprites = [background, enemy, player]
     add_sprite(sprites_group, sprites)
     seconds = 60
-    music_1.play()
+    area_music.play()
 
     while True:
         clock.tick(7)
-        check_events(player, seconds, shredder)
-        update_background(player, background, shredder)
+        check_events(player, seconds, enemy)
+        detect_collision(player, enemy)
+        update_background(player, background, enemy)
         sprites_group.update()
-        screen_draw(screen, sprites_group, player, seconds, shredder)
+        screen_draw(window, sprites_group, player, seconds, enemy)
         seconds -= 0.13
 
 

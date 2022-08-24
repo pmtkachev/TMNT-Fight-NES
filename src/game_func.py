@@ -12,22 +12,19 @@ jump_sound = pygame.mixer.Sound('snd/jump.mp3')
 
 # check events
 def check_events(player, seconds, enemy):
-    if seconds <= 0:
-        print('Game over')
-        pygame.quit()
-        sys.exit(0)
+    # if seconds <= 0:
+    #     print('Game over')
+    #     pygame.quit()
+    #     sys.exit(0)
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             sys.exit(0)
 
         if event.type == KEYDOWN:
-            if event.key == K_x:
-                player.life -= 10
-                # enemy.life -= 10
             if event.key == K_w:
-                player.down = False
                 jump_sound.play()
+                player.down = False
                 player.isjump = True
             elif event.key == K_SPACE:
                 player.block = True
@@ -97,8 +94,22 @@ def add_sprite(sprite_group, sprites):
         sprite_group.add(sprite)
 
 
-def draw_lives(player, screen, shredder):
+def detect_collision(player, enemy):
+    collide = player.rect.colliderect(enemy.rect)
+    if collide and player.wright:
+        enemy.x += 15
+    elif collide and player.fight_arm:
+        enemy.uron = True
+        enemy.life -= 3
+    elif collide and player.fight_foot:
+        enemy.uron = True
+        enemy.life -= 5
+    elif collide and player.fight_arm_down:
+        enemy.uron = True
+        enemy.life -= 4
 
+
+def draw_lives(player, screen, shredder):
     pygame.draw.rect(screen, player.color_life, (70, 42, player.life * 1.75, 10))
     shredder_rect = Rect(0, 42, shredder.life * 1.75, 10)
     shredder_rect.right = 730
@@ -121,10 +132,10 @@ def screen_draw(screen, sprites_group, player, seconds, shredder):
 # update background
 def update_background(player, background, enemy):
     if (player.x <= 75 and player.wleft) or (enemy.x <= 80 and enemy.wleft):
-        background.x += 20
+        background.rect.centerx += 20
     elif (player.x >= 720 and player.wright) or (enemy.x >= 720 and enemy.wright):
-        background.x -= 20
-    if background.x >= 640:
-        background.x -= 20
-    elif background.x <= 160:
-        background.x += 20
+        background.rect.centerx -= 20
+    if background.rect.centerx >= 640:
+        background.rect.centerx -= 20
+    elif background.rect.centerx <= 160:
+        background.rect.centerx += 20

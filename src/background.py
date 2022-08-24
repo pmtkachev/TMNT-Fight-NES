@@ -2,13 +2,9 @@ import pygame
 
 
 class Background(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, area):
         super(Background, self).__init__()
-        self.image = pygame.image.load('img/backgrounds/zone_1.png')
-        self.x, self.y = 400, 0
+        self.image = area
         self.rect = self.image.get_rect()
-        self.rect.centerx = self.x
-        self.rect.y = self.y
-
-    def update(self):
-        self.rect.centerx = self.x
+        self.rect.centerx = 400
+        self.rect.y = 0

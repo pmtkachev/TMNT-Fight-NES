@@ -50,6 +50,7 @@ class Player(pygame.sprite.Sprite):
             self.m = 1
 
     def update(self):
+        self.rect = self.image.get_rect()
         self.index += 1
         if self.life <= 60:
             self.color_life = (255, 255, 0)

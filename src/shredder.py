@@ -2,9 +2,9 @@ import pygame
 from src.player import fight_arm_sound, fight_foot_sound
 
 
-class Enemy(pygame.sprite.Sprite):
+class Shredder(pygame.sprite.Sprite):
     def __init__(self):
-        super(Enemy, self).__init__()
+        super(Shredder, self).__init__()
         self.life = 100
         self.color_life = (0, 255, 0)
         self.portrait = pygame.image.load('img/sprites/enemies/shredder/shred_portrait.png')
@@ -26,6 +26,8 @@ class Enemy(pygame.sprite.Sprite):
         self.image_foot_jump = pygame.image.load(f'img/sprites/enemies/shredder/shred_foot_jump.png')
         self.image_block = pygame.image.load(f'img/sprites/enemies/shredder/shred_block.png')
         self.image_block_down = pygame.image.load(f'img/sprites/enemies/shredder/shred_block_down.png')
+        self.image_damage = pygame.image.load(f'img/sprites/enemies/shredder/shred_damage.png')
+        self.image_defeat = pygame.image.load(f'img/sprites/enemies/shredder/shred_defeat.png')
         self.index = 0
         self.image = self.images[self.index]
         self.x, self.y = 650, 298
@@ -36,6 +38,7 @@ class Enemy(pygame.sprite.Sprite):
         self.fight_arm, self.fight_foot = False, False
         self.fight_arm_down, self.fight_foot_down = False, False
         self.block = False
+        self.uron = False
 
     def jump(self):
         self.y -= (1 / 2) * self.m * (self.speed ** 2)
@@ -48,6 +51,7 @@ class Enemy(pygame.sprite.Sprite):
             self.m = 1
 
     def update(self):
+        self.rect = self.image.get_rect()
         self.index += 1
         if self.life <= 60:
             self.color_life = (255, 255, 0)
@@ -117,3 +121,8 @@ class Enemy(pygame.sprite.Sprite):
             self.fight_foot = False
         elif self.block:
             self.image = self.image_block
+        if self.uron:
+            self.image = self.image_damage
+            self.uron = False
+        if self.life <= 0:
+            self.image = self.image_defeat
