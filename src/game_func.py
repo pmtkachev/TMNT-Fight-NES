@@ -1,13 +1,7 @@
 import pygame
-from pygame.locals import *
 import sys
-
-# add sound, font, HUD
-hud = pygame.image.load('img/sprites/hud.png')
-pygame.font.init()
-font = pygame.font.Font('fnt/pixel.ttf', 52)
-font_name = pygame.font.Font('fnt/pixel.ttf', 16)
-jump_sound = pygame.mixer.Sound('snd/jump.mp3')
+import src.load_resources as lr
+from pygame.locals import *
 
 
 # check events
@@ -23,7 +17,7 @@ def check_events(player, seconds, enemy):
 
         if event.type == KEYDOWN:
             if event.key == K_w:
-                jump_sound.play()
+                lr.sounds_fight['jump_sound'].play()
                 player.down = False
                 player.isjump = True
             elif event.key == K_SPACE:
@@ -35,7 +29,7 @@ def check_events(player, seconds, enemy):
 
             if event.key == K_UP:
                 enemy.down = False
-                jump_sound.play()
+                lr.sounds_fight['jump_sound'].play()
                 enemy.isjump = True
             elif event.key == K_c:
                 enemy.block = True
@@ -97,32 +91,32 @@ def add_sprite(sprite_group, sprites):
 def detect_collision(player, enemy):
     collide = player.rect.colliderect(enemy.rect)
     if collide and player.wright:
-        enemy.x += 15
+        enemy.position['x'] += 15
     elif collide and player.fight_arm:
-        enemy.uron = True
-        enemy.life -= 3
+        enemy.damage = True
+        enemy.life['life'] -= 3
     elif collide and player.fight_foot:
-        enemy.uron = True
-        enemy.life -= 5
+        enemy.damage = True
+        enemy.life['life'] -= 5
     elif collide and player.fight_arm_down:
-        enemy.uron = True
-        enemy.life -= 4
+        enemy.damage = True
+        enemy.life['life'] -= 4
 
 
 def draw_lives(player, screen, shredder):
-    pygame.draw.rect(screen, player.color_life, (70, 42, player.life * 1.75, 10))
-    shredder_rect = Rect(0, 42, shredder.life * 1.75, 10)
+    pygame.draw.rect(screen, player.life['color'], (70, 42, player.life['life'] * 1.75, 10))
+    shredder_rect = Rect(0, 42, shredder.life['life'] * 1.75, 10)
     shredder_rect.right = 730
-    pygame.draw.rect(screen, shredder.color_life, shredder_rect)
+    pygame.draw.rect(screen, shredder.life['color'], shredder_rect)
 
 
 # draw screen
 def screen_draw(screen, sprites_group, player, seconds, shredder):
     sprites_group.draw(screen)
-    time = font.render(str(int(seconds)).zfill(2), False, (255, 255, 255))
-    name_player = font_name.render('LEO', False, (255, 255, 255))
-    name_enemy = font_name.render('SHREDDER', False, (255, 255, 255))
-    screen.blits(blit_sequence=((hud, (10, 10, 175, 50)), (player.portrait, player.portrait_rect),
+    time = lr.fonts['time_font'].render(str(int(seconds)).zfill(2), False, (255, 255, 255))
+    name_player = lr.fonts['name_font'].render('LEO', False, (255, 255, 255))
+    name_enemy = lr.fonts['name_font'].render('SHREDDER', False, (255, 255, 255))
+    screen.blits(blit_sequence=((lr.hud, (10, 10, 175, 50)), (player.portrait, player.portrait_rect),
                                 (shredder.portrait, shredder.portrait_rect), (time, (373, 5)),
                                 (name_player, (70, 20)), (name_enemy, (660, 20))))
     draw_lives(player, screen, shredder)
@@ -131,9 +125,9 @@ def screen_draw(screen, sprites_group, player, seconds, shredder):
 
 # update background
 def update_background(player, background, enemy):
-    if (player.x <= 75 and player.wleft) or (enemy.x <= 80 and enemy.wleft):
+    if (player.position['x'] <= 75 and player.wleft) or (enemy.position['x'] <= 80 and enemy.wleft):
         background.rect.centerx += 20
-    elif (player.x >= 720 and player.wright) or (enemy.x >= 720 and enemy.wright):
+    elif (player.position['x'] >= 720 and player.wright) or (enemy.position['x'] >= 720 and enemy.wright):
         background.rect.centerx -= 20
     if background.rect.centerx >= 640:
         background.rect.centerx -= 20

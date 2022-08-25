@@ -1,3 +1,4 @@
 ﻿venv
 .idea
 src/__pycache__
+.pylintrc
