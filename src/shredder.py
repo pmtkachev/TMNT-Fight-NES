@@ -1,36 +1,17 @@
-import pygame
 import src.load_resources as lr
-import hero
+from src.hero import Hero
 
 
-class Shredder(pygame.sprite.Sprite, hero):
+class Shredder(Hero):
     def __init__(self):
         super().__init__()
-        self.life = {'life': 100, 'color': (0, 255, 0)}
         self.position = {'x': 650, 'y': 298}
-        self.index = 0
-        self.parameters = {'speed': 15, 'weight': 1}
         self.portrait = lr.shredder['portrait']
         self.portrait_rect = self.portrait.get_rect()
         self.portrait_rect.x, self.portrait_rect.y = 740, 10
         self.image = lr.shredder['stay'][self.index]
         self.rect = self.image.get_rect()
-        self.wright, self.wleft = False, False
-        self.down, self.isjump = False, False
-        self.fight_arm, self.fight_foot = False, False
-        self.fight_arm_down, self.fight_foot_down = False, False
-        self.block = False
         self.damage = False
-
-    def jump(self):
-        self.position['y'] -= (1 / 2) * self.parameters['weight'] * (self.parameters['speed'] ** 2)
-        self.parameters['speed'] -= 5
-        if self.parameters['speed'] < 0:
-            self.parameters['weight'] = -1
-        if self.parameters['speed'] == -20:
-            self.isjump = False
-            self.parameters['speed'] = 15
-            self.parameters['weight'] = 1
 
     def update(self):
         self.rect = self.image.get_rect()
