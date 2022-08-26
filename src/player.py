@@ -1,8 +1,9 @@
 import pygame
 import src.load_resources as lr
+import hero
 
 
-class Player(pygame.sprite.Sprite):
+class Player(pygame.sprite.Sprite, hero):
     def __init__(self):
         super().__init__()
         self.life = {'life': 100, 'color': (0, 255, 0)}
