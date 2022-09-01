@@ -1,24 +1,25 @@
 import pygame
-import src.load_resources as lr
+from src.load_resources import sounds_fight
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, img, x, y, p_x, p_y):
         super().__init__()
+        self.x, self.y, self.img = x, y, img
         self.life = {'life': 100, 'color': (0, 255, 0)}
-        self.position = {'x': 150, 'y': 310}
+        self.position = {'x': self.x, 'y': self.y} # {'x': 150, 'y': 310}
         self.index = 0
         self.parameters = {'speed': 15, 'weight': 1}
-        self.portrait = lr.leo['portrait']
+        self.portrait = self.img['portrait']
         self.portrait_rect = self.portrait.get_rect()
-        self.portrait_rect.x, self.portrait_rect.y = 10, 10
-        self.image = lr.leo['stay'][self.index]
+        self.portrait_rect.x, self.portrait_rect.y = p_x, p_y
+        self.image = self.img['stay'][self.index]
         self.rect = self.image.get_rect()
         self.wright, self.wleft = False, False
         self.down, self.isjump = False, False
         self.fight_arm, self.fight_foot = False, False
         self.fight_arm_down, self.fight_foot_down = False, False
-        self.block = False
+        self.block, self.damage = False, False
 
     def jump(self):
         self.position['y'] -= (1 / 2) * self.parameters['weight'] * (self.parameters['speed'] ** 2)
@@ -33,9 +34,9 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         self.rect = self.image.get_rect()
         self.index += 1
-        if self.index >= len(lr.leo['stay']):
+        if self.index >= len(self.img['stay']):
             self.index = 0
-        self.image = lr.leo['stay'][self.index]
+        self.image = self.img['stay'][self.index]
         self.rect.center = self.position['x'], self.position['y']
 
         # life status
@@ -45,62 +46,71 @@ class Player(pygame.sprite.Sprite):
             self.life['color'] = (255, 0, 0)
 
         if self.wright and self.isjump:
-            self.image = lr.leo['jump_flip'][self.index]
+            if self.index >= len(self.img['jump_flip']):
+                self.index = 0
+            self.image = self.img['jump_flip'][self.index]
             self.jump()
             self.position['x'] += 15
             if self.position['x'] >= 730:
                 self.position['x'] -= 15
         elif self.wright:
             self.position['x'] += self.parameters['speed']
-            self.image = lr.leo['wright'][self.index]
+            self.image = self.img['wright'][self.index]
             if self.position['x'] >= 730:
                 self.position['x'] -= self.parameters['speed']
 
         elif self.wleft and self.isjump:
-            self.image = lr.leo['jump_flip'][self.index]
+            if self.index >= len(self.img['jump_flip']):
+                self.index = 0
+            self.image = self.img['jump_flip'][self.index]
             self.jump()
             self.position['x'] -= 15
             if self.position['x'] <= 70:
                 self.position['x'] += 15
         elif self.wleft:
             self.position['x'] -= self.parameters['speed']
-            self.image = lr.leo['wleft'][self.index]
+            self.image = self.img['wleft'][self.index]
             if self.position['x'] <= 70:
                 self.position['x'] += self.parameters['speed']
 
         elif self.isjump and self.fight_arm:
-            lr.sounds_fight['fight_arm_sound'].play()
-            self.image = lr.leo['arm_f_jump']
+            sounds_fight['fight_arm_sound'].play()
+            self.image = self.img['arm_f_jump']
             self.fight_arm = False
         elif self.down and self.fight_arm:
-            lr.sounds_fight['fight_arm_sound'].play()
-            self.image = lr.leo['arm_f_down']
+            sounds_fight['fight_arm_sound'].play()
+            self.image = self.img['arm_f_down']
             self.fight_arm = False
 
         elif self.isjump and self.fight_foot:
-            lr.sounds_fight['fight_foot_sound'].play()
-            self.image = lr.leo['foot_f_jump']
+            sounds_fight['fight_foot_sound'].play()
+            self.image = self.img['foot_f_jump']
             self.fight_foot = False
         elif self.down and self.fight_foot:
-            lr.sounds_fight['fight_foot_sound'].play()
-            self.image = lr.leo['foot_f_down']
+            sounds_fight['fight_foot_sound'].play()
+            self.image = self.img['foot_f_down']
             self.fight_foot = False
 
         elif self.down and self.block:
-            self.image = lr.leo['block_down']
+            self.image = self.img['block_down']
         elif self.down:
-            self.image = lr.leo['sit']
+            self.image = self.img['sit']
         elif self.isjump:
-            self.image = lr.leo['jump']
+            self.image = self.img['jump']
             self.jump()
 
         elif self.fight_arm:
-            lr.sounds_fight['fight_arm_sound'].play()
-            self.image = lr.leo['arm_f']
+            sounds_fight['fight_arm_sound'].play()
+            self.image = self.img['arm_f']
             self.fight_arm = False
         elif self.fight_foot:
-            lr.sounds_fight['fight_foot_sound'].play()
-            self.image = lr.leo['foot_f']
+            sounds_fight['fight_foot_sound'].play()
+            self.image = self.img['foot_f']
             self.fight_foot = False
         elif self.block:
-            self.image = lr.leo['block']
+            self.image = self.img['block']
+        if self.damage:
+            self.image = self.img['damage']
+            self.damage = False
+        if self.life['life'] <= 0:
+            self.image = self.img['defeat']

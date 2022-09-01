@@ -1,7 +1,22 @@
-import pygame
 import sys
+import pygame
 import src.load_resources as lr
 from pygame.locals import *
+
+
+def check_menu(start_rect, about_rect, exit_rect):
+    for event in pygame.event.get():
+        if event.type == MOUSEBUTTONDOWN:
+            pos = pygame.mouse.get_pos()
+            if start_rect.collidepoint(pos):
+                lr.other_sounds['menu_select'].play()
+                return 'start'
+            if about_rect.collidepoint(pos):
+                lr.other_sounds['menu_select'].play()
+                return 'about'
+            if exit_rect.collidepoint(pos):
+                lr.other_sounds['menu_select'].play()
+                return 'exit'
 
 
 # check events
@@ -16,6 +31,9 @@ def check_events(player, seconds, enemy):
             sys.exit(0)
 
         if event.type == KEYDOWN:
+            if event.key == K_q:
+                pygame.quit()
+                sys.exit(0)
             if event.key == K_w:
                 lr.sounds_fight['jump_sound'].play()
                 player.down = False
@@ -116,7 +134,7 @@ def screen_draw(screen, sprites_group, player, seconds, shredder):
     time = lr.fonts['time_font'].render(str(int(seconds)).zfill(2), False, (255, 255, 255))
     name_player = lr.fonts['name_font'].render('LEO', False, (255, 255, 255))
     name_enemy = lr.fonts['name_font'].render('SHREDDER', False, (255, 255, 255))
-    screen.blits(blit_sequence=((lr.hud, (10, 10, 175, 50)), (player.portrait, player.portrait_rect),
+    screen.blits(blit_sequence=((lr.other_images['hud'], (10, 10, 175, 50)), (player.portrait, player.portrait_rect),
                                 (shredder.portrait, shredder.portrait_rect), (time, (373, 5)),
                                 (name_player, (70, 20)), (name_enemy, (660, 20))))
     draw_lives(player, screen, shredder)
