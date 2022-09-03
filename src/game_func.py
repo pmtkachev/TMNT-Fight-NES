@@ -132,8 +132,8 @@ def draw_lives(player, screen, shredder):
 def screen_draw(screen, sprites_group, player, seconds, shredder):
     sprites_group.draw(screen)
     time = lr.fonts['time_font'].render(str(int(seconds)).zfill(2), False, (255, 255, 255))
-    name_player = lr.fonts['name_font'].render('LEO', False, (255, 255, 255))
-    name_enemy = lr.fonts['name_font'].render('SHREDDER', False, (255, 255, 255))
+    name_player = lr.fonts['name_font'].render(player.name, False, (255, 255, 255))
+    name_enemy = lr.fonts['name_font'].render(shredder.name, False, (255, 255, 255))
     screen.blits(blit_sequence=((lr.other_images['hud'], (10, 10, 175, 50)), (player.portrait, player.portrait_rect),
                                 (shredder.portrait, shredder.portrait_rect), (time, (373, 5)),
                                 (name_player, (70, 20)), (name_enemy, (660, 20))))

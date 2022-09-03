@@ -3,11 +3,13 @@ from src.load_resources import sounds_fight
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, img, x, y, p_x, p_y):
+    def __init__(self, img, x, y, p_x, p_y, name, turtle=True):
         super().__init__()
         self.x, self.y, self.img = x, y, img
+        self.turtle = turtle
+        self.name = name
         self.life = {'life': 100, 'color': (0, 255, 0)}
-        self.position = {'x': self.x, 'y': self.y} # {'x': 150, 'y': 310}
+        self.position = {'x': self.x, 'y': self.y}
         self.index = 0
         self.parameters = {'speed': 15, 'weight': 1}
         self.portrait = self.img['portrait']
@@ -32,12 +34,12 @@ class Player(pygame.sprite.Sprite):
             self.parameters['weight'] = 1
 
     def update(self):
-        self.rect = self.image.get_rect()
+
         self.index += 1
         if self.index >= len(self.img['stay']):
             self.index = 0
         self.image = self.img['stay'][self.index]
-        self.rect.center = self.position['x'], self.position['y']
+
 
         # life status
         if self.life['life'] <= 60:
@@ -114,3 +116,9 @@ class Player(pygame.sprite.Sprite):
             self.damage = False
         if self.life['life'] <= 0:
             self.image = self.img['defeat']
+
+        self.rect = self.image.get_rect()
+        if self.turtle:
+            self.rect.x, self.rect.bottom = self.position['x'], self.position['y']
+        else:
+            self.rect.right, self.rect.bottom = self.position['x'], self.position['y']
