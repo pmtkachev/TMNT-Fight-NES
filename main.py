@@ -4,6 +4,7 @@ import pygame
 import src.load_resources as lr
 import src.game_func as gf
 from src.game import run_game
+from src.sel_area import select_area
 
 pygame.init()
 
@@ -57,7 +58,7 @@ def run():
                                     (about, about_rect), (lr.other_images['splash'], (225, 20))))
         action = gf.check_menu(start_rect, about_rect, exit_rect)
         if action == 'start':
-            run_game(window)
+            select_area(window)
         elif action == 'about':
             about_info()
         elif action == 'exit':

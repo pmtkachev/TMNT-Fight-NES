@@ -5,17 +5,17 @@ from src.player import Player
 from src.background import Background
 
 
-def run_game(window):
+def run_game(window, area, name):
     # Choose area
-    area = lr.background_areas['zone_1']
-    area_music = lr.musics_areas['zone_1']
-    name = 'mike'
+    area_bg = lr.background_areas[area]
+    area_music = lr.musics_areas[area]
+    name = name
     turtle = lr.choose_turtle(name)
     clock = pygame.time.Clock()
     sprites_group = pygame.sprite.Group()
-    background = Background(area)
-    turtle = Player(turtle, 150, 390, 10, 10, name.upper())
-    shredder = Player(lr.shredder, 650, 390, 740, 10, 'SHREDDER', False)
+    background = Background(area_bg)
+    turtle = Player(turtle, 150, 405, 10, 10, name.upper())
+    shredder = Player(lr.shredder, 650, 405, 740, 10, 'SHREDDER', False)
     sprites = [background, shredder, turtle]
     gf.add_sprite(sprites_group, sprites)
     seconds = 60

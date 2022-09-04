@@ -1,5 +1,6 @@
 import sys
 import pygame
+from main import run
 import src.load_resources as lr
 from pygame.locals import *
 
@@ -32,8 +33,8 @@ def check_events(player, seconds, enemy):
 
         if event.type == KEYDOWN:
             if event.key == K_q:
-                pygame.quit()
-                sys.exit(0)
+                pygame.mixer.stop()
+                run()
             if event.key == K_w:
                 lr.sounds_fight['jump_sound'].play()
                 player.down = False
