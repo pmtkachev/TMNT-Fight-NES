@@ -40,7 +40,6 @@ class Player(pygame.sprite.Sprite):
             self.index = 0
         self.image = self.img['stay'][self.index]
 
-
         # life status
         if self.life['life'] <= 60:
             self.life['color'] = (255, 255, 0)
@@ -122,3 +121,4 @@ class Player(pygame.sprite.Sprite):
             self.rect.x, self.rect.bottom = self.position['x'], self.position['y']
         else:
             self.rect.right, self.rect.bottom = self.position['x'], self.position['y']
+

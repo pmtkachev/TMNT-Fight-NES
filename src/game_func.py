@@ -5,19 +5,50 @@ import src.load_resources as lr
 from pygame.locals import *
 
 
-def check_menu(start_rect, about_rect, exit_rect):
+def check_mouse(trigger):
     for event in pygame.event.get():
         if event.type == MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
-            if start_rect.collidepoint(pos):
-                lr.other_sounds['menu_select'].play()
-                return 'start'
-            if about_rect.collidepoint(pos):
-                lr.other_sounds['menu_select'].play()
-                return 'about'
-            if exit_rect.collidepoint(pos):
-                lr.other_sounds['menu_select'].play()
-                return 'exit'
+            if trigger == 'area':
+                if 55 <= pos[0] <= 180 and 135 <= pos[1] <= 180:
+                    lr.other_sounds['menu_select'].play()
+                    return 'water_front'
+                elif 25 <= pos[0] <= 175 and 265 <= pos[1] <= 320:
+                    lr.other_sounds['menu_select'].play()
+                    return 'pirate_ship'
+                elif 615 <= pos[0] <= 720 and 135 <= pos[1] <= 180:
+                    lr.other_sounds['menu_select'].play()
+                    return 'down_town'
+                elif 645 <= pos[0] <= 770 and 295 <= pos[1] <= 315:
+                    lr.other_sounds['menu_select'].play()
+                    return 'sewer'
+            elif trigger == 'turtle':
+                if 200 <= pos[0] <= 270 and 180 <= pos[1] <= 250:
+                    lr.other_sounds['menu_select'].play()
+                    return 'leo'
+                elif 310 <= pos[0] <= 380 and 180 <= pos[1] <= 250:
+                    lr.other_sounds['menu_select'].play()
+                    return 'raph'
+                elif 420 <= pos[0] <= 490 and 180 <= pos[1] <= 250:
+                    lr.other_sounds['menu_select'].play()
+                    return 'mike'
+                elif 530 <= pos[0] <= 600 and 180 <= pos[1] <= 250:
+                    lr.other_sounds['menu_select'].play()
+                    return 'don'
+            elif trigger == 'menu':
+                if 360 <= pos[0] <= 445 and 240 <= pos[1] <= 265:
+                    lr.other_sounds['menu_select'].play()
+                    return 'start'
+                elif 360 <= pos[0] <= 445 and 290 <= pos[1] <= 310:
+                    lr.other_sounds['menu_select'].play()
+                    return 'about'
+                elif 365 <= pos[0] <= 430 and 340 <= pos[1] <= 365:
+                    lr.other_sounds['menu_select'].play()
+                    return 'exit'
+            elif trigger == 'about':
+                if 65 <= pos[0] <= 165 and 380 <= pos[1] <= 405:
+                    lr.other_sounds['menu_select'].play()
+                    return 'exit'
 
 
 # check events
@@ -27,10 +58,6 @@ def check_events(player, seconds, enemy):
     #     pygame.quit()
     #     sys.exit(0)
     for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit(0)
-
         if event.type == KEYDOWN:
             if event.key == K_q:
                 pygame.mixer.stop()
@@ -130,15 +157,17 @@ def draw_lives(player, screen, shredder):
 
 
 # draw screen
-def screen_draw(screen, sprites_group, player, seconds, shredder):
-    sprites_group.draw(screen)
+def screen_draw(window, sprites_group, player, seconds, shredder):
+    sprites_group.draw(window)
     time = lr.fonts['time_font'].render(str(int(seconds)).zfill(2), False, (255, 255, 255))
     name_player = lr.fonts['name_font'].render(player.name, False, (255, 255, 255))
     name_enemy = lr.fonts['name_font'].render(shredder.name, False, (255, 255, 255))
-    screen.blits(blit_sequence=((lr.other_images['hud'], (10, 10, 175, 50)), (player.portrait, player.portrait_rect),
+    window.blits(blit_sequence=((lr.other_images['hud'], (10, 10, 175, 50)), (player.portrait, player.portrait_rect),
                                 (shredder.portrait, shredder.portrait_rect), (time, (373, 5)),
                                 (name_player, (70, 20)), (name_enemy, (660, 20))))
-    draw_lives(player, screen, shredder)
+    draw_lives(player, window, shredder)
+    pygame.draw.rect(window, (0, 255, 0), player.rect)
+    pygame.draw.rect(window, (255, 0, 0), shredder.rect)
     pygame.display.update()
 
 

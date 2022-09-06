@@ -25,8 +25,8 @@ def run_game(window, area, name):
         clock.tick(7)
         gf.check_events(turtle, seconds, shredder)
         gf.update_background(turtle, background, shredder)
-        gf.detect_collision(turtle, shredder)
         sprites_group.update()
+        gf.detect_collision(turtle, shredder)
         gf.screen_draw(window, sprites_group, turtle, seconds, shredder)
         seconds -= 0.13
 
