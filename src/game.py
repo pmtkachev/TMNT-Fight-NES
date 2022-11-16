@@ -9,7 +9,6 @@ def run_game(window, area, name):
     # Choose area
     area_bg = lr.background_areas[area]
     area_music = lr.musics_areas[area]
-    name = name
     turtle = lr.choose_turtle(name)
     clock = pygame.time.Clock()
     sprites_group = pygame.sprite.Group()
@@ -29,4 +28,3 @@ def run_game(window, area, name):
         gf.detect_collision(turtle, shredder)
         gf.screen_draw(window, sprites_group, turtle, seconds, shredder)
         seconds -= 0.13
-

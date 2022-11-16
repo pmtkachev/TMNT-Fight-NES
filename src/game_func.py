@@ -1,54 +1,74 @@
-import sys
 import pygame
 from main import run
 import src.load_resources as lr
 from pygame.locals import *
 
 
-def check_mouse(trigger):
+def up_down(event, cur_pos):
+    if event.key == K_UP:
+        lr.other_sounds['menu_selectel'].play()
+        return 'up'
+    if event.key == K_DOWN:
+        lr.other_sounds['menu_selectel'].play()
+        return 'down'
+    if event.key == K_SPACE:
+        lr.other_sounds['menu_select'].play()
+        match cur_pos:
+            case 228:
+                return 'start'
+            case 275:
+                return 'help'
+            case 322:
+                return 'about'
+            case 369:
+                return 'exit'
+            case 100:
+                return 'water_front'
+            case 161:
+                return 'down_town'
+            case 222:
+                return 'pirate_ship'
+            case 283:
+                return 'sewer'
+
+
+def check_menu(cur_pos=0, menu='main'):
     for event in pygame.event.get():
-        if event.type == MOUSEBUTTONDOWN:
-            pos = pygame.mouse.get_pos()
-            if trigger == 'area':
-                if 55 <= pos[0] <= 180 and 135 <= pos[1] <= 180:
-                    lr.other_sounds['menu_select'].play()
-                    return 'water_front'
-                elif 25 <= pos[0] <= 175 and 265 <= pos[1] <= 320:
-                    lr.other_sounds['menu_select'].play()
-                    return 'pirate_ship'
-                elif 615 <= pos[0] <= 720 and 135 <= pos[1] <= 180:
-                    lr.other_sounds['menu_select'].play()
-                    return 'down_town'
-                elif 645 <= pos[0] <= 770 and 295 <= pos[1] <= 315:
-                    lr.other_sounds['menu_select'].play()
-                    return 'sewer'
-            elif trigger == 'turtle':
-                if 200 <= pos[0] <= 270 and 180 <= pos[1] <= 250:
-                    lr.other_sounds['menu_select'].play()
-                    return 'leo'
-                elif 310 <= pos[0] <= 380 and 180 <= pos[1] <= 250:
-                    lr.other_sounds['menu_select'].play()
-                    return 'raph'
-                elif 420 <= pos[0] <= 490 and 180 <= pos[1] <= 250:
-                    lr.other_sounds['menu_select'].play()
-                    return 'mike'
-                elif 530 <= pos[0] <= 600 and 180 <= pos[1] <= 250:
-                    lr.other_sounds['menu_select'].play()
-                    return 'don'
-            elif trigger == 'menu':
-                if 360 <= pos[0] <= 445 and 240 <= pos[1] <= 265:
-                    lr.other_sounds['menu_select'].play()
-                    return 'start'
-                elif 360 <= pos[0] <= 445 and 290 <= pos[1] <= 310:
-                    lr.other_sounds['menu_select'].play()
-                    return 'about'
-                elif 365 <= pos[0] <= 430 and 340 <= pos[1] <= 365:
-                    lr.other_sounds['menu_select'].play()
-                    return 'exit'
-            elif trigger == 'about':
-                if 65 <= pos[0] <= 165 and 380 <= pos[1] <= 405:
-                    lr.other_sounds['menu_select'].play()
-                    return 'exit'
+        if event.type == KEYDOWN:
+            match menu:
+                case 'main':
+                    return up_down(event, cur_pos)
+                case 'about':
+                    if event.key == K_ESCAPE:
+                        lr.other_sounds['menu_select'].play()
+                        return 'esc'
+                case 'area':
+                    if event.key == K_ESCAPE:
+                        lr.other_sounds['menu_select'].play()
+                        return 'esc'
+                    return up_down(event, cur_pos)
+                case 'turtle':
+                    if event.key == K_RIGHT:
+                        lr.other_sounds['menu_selectel'].play()
+                        return 'right'
+                    if event.key == K_LEFT:
+                        lr.other_sounds['menu_selectel'].play()
+                        return 'left'
+                    if event.key == K_SPACE:
+                        lr.other_sounds['menu_select'].play()
+                        match cur_pos:
+                            case 186:
+                                return 'leo'
+                            case 296:
+                                return 'raph'
+                            case 406:
+                                return 'mike'
+                            case 516:
+                                return 'don'
+
+                    if event.key == K_ESCAPE:
+                        lr.other_sounds['menu_select'].play()
+                        return 'esc'
 
 
 # check events

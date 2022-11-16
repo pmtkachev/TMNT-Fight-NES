@@ -12,10 +12,9 @@ musics_areas = {'sewer': pygame.mixer.Sound('snd/sewer.mp3'),
 sounds_fight = {'fight_arm_sound': pygame.mixer.Sound('snd/fight_arm.mp3'),
                 'fight_foot_sound': pygame.mixer.Sound('snd/fight_foot.mp3'),
                 'jump_sound': pygame.mixer.Sound('snd/jump.mp3')}
-other_sounds = {'menu_select': pygame.mixer.Sound('snd/menu_select.mp3')}
+other_sounds = {'menu_select': pygame.mixer.Sound('snd/menu_select.mp3'),
+                'menu_selectel': pygame.mixer.Sound('snd/menu_selectel.mp3')}
 
-# Load images
-# Images areas
 background_areas = {'sewer': pygame.image.load('img/backgrounds/sewer.png'),
                     'water_front': pygame.image.load('img/backgrounds/water_front.png'),
                     'pirate_ship': pygame.image.load('img/backgrounds/pirate_ship.png'),
@@ -72,9 +71,10 @@ other_images = {'hud': pygame.image.load('img/sprites/hud.png'),
                 'splash': pygame.image.load('img/sprites/splash.png'),
                 'about': pygame.image.load('img/sprites/about.png'),
                 'ch_area': pygame.image.load('img/sprites/ch_area.png'),
-                'ch_turtle': pygame.image.load('img/sprites/ch_turtle.png')}
+                'ch_turtle': pygame.image.load('img/sprites/ch_turtle.png'),
+                'cursor': pygame.image.load('img/sprites/cursor.png'),
+                'cursor_t': pygame.image.load('img/sprites/cur_turt.png')}
 
 # Fonts
 fonts = {'time_font': pygame.font.Font('fnt/pixel.ttf', 52),
-         'name_font': pygame.font.Font('fnt/pixel.ttf', 16),
-         'menu_font': pygame.font.Font('fnt/pixel.ttf', 32)}
+         'name_font': pygame.font.Font('fnt/pixel.ttf', 16)}
