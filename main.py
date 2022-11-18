@@ -20,13 +20,13 @@ def about_info():
 
 
 # run main menu
-def run():
+def main_menu():
     cur_pos_y = 228
     while True:
         window.blits(blit_sequence=((lr.other_images['splash'], (0, 0)),
                      (lr.other_images['cursor'], (320, cur_pos_y))))
 
-        action = gf.check_menu(cur_pos_y)
+        action = gf.check_menu(cur_pos=cur_pos_y)
 
         match action:
             case 'down':
@@ -52,4 +52,4 @@ def run():
 
 
 if __name__ == '__main__':
-    run()
+    main_menu()

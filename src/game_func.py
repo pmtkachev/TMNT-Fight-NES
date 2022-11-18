@@ -1,7 +1,8 @@
 import pygame
-from main import run
+from main import main_menu
 import src.load_resources as lr
 from pygame.locals import *
+from random import randint
 
 
 def up_down(event, cur_pos):
@@ -72,37 +73,12 @@ def check_menu(cur_pos=0, menu='main'):
 
 
 # check events
-def check_events(player, seconds, enemy):
-    # if seconds <= 0:
-    #     print('Game over')
-    #     pygame.quit()
-    #     sys.exit(0)
+def player_control(player):
     for event in pygame.event.get():
         if event.type == KEYDOWN:
-            if event.key == K_q:
+            if event.key == K_ESCAPE:
                 pygame.mixer.stop()
-                run()
-            if event.key == K_w:
-                lr.sounds_fight['jump_sound'].play()
-                player.down = False
-                player.isjump = True
-            elif event.key == K_SPACE:
-                player.block = True
-            elif event.key == K_n:
-                player.fight_arm = True
-            elif event.key == K_m:
-                player.fight_foot = True
-
-            if event.key == K_UP:
-                enemy.down = False
-                lr.sounds_fight['jump_sound'].play()
-                enemy.isjump = True
-            elif event.key == K_c:
-                enemy.block = True
-            elif event.key == K_z:
-                enemy.fight_arm = True
-            elif event.key == K_x:
-                enemy.fight_foot = True
+                main_menu()
 
             if not player.isjump:
                 if event.key == K_a:
@@ -112,13 +88,16 @@ def check_events(player, seconds, enemy):
                 if event.key == K_s:
                     player.down = True
 
-            if not enemy.isjump:
-                if event.key == K_LEFT:
-                    enemy.wleft = True
-                elif event.key == K_RIGHT:
-                    enemy.wright = True
-                elif event.key == K_DOWN:
-                    enemy.down = True
+            if event.key == K_w:
+                lr.sounds_fight['jump_sound'].play()
+                player.down = False
+                player.isjump = True
+            elif event.key == K_SPACE:
+                player.block = True
+            elif event.key == K_o:
+                player.fight_arm = True
+            elif event.key == K_p:
+                player.fight_foot = True
 
         if event.type == KEYUP:
             if event.key == K_a:
@@ -134,18 +113,28 @@ def check_events(player, seconds, enemy):
             if event.key == K_SPACE:
                 player.block = False
 
-            if event.key == K_LEFT:
-                enemy.wleft = False
-            if event.key == K_RIGHT:
-                enemy.wright = False
-            if event.key == K_DOWN:
-                enemy.down = False
-            if event.key == K_1:
-                enemy.fight_arm = False
-            if event.key == K_2:
-                enemy.fight_foot = False
-            if event.key == K_c:
-                enemy.block = False
+
+def enemy_control_ai(enemy, player):
+    keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_m]:
+        enemy.fight_arm = True
+
+    # if player.rect.right + 25 > enemy.rect.right:
+    #     player.flip = True
+    #     enemy.flip = True
+    # else:
+    #     player.flip = False
+    #     enemy.flip = False
+    # if enemy.rect.left >= player.rect.right + 25:
+    #     enemy.wleft = True
+    # else:
+    #     enemy.wleft = False
+
+    # if enemy.rect.left <= player.rect.right + 20:
+    #     enemy.wright = True
+    # else:
+    #     enemy.wright = False
 
 
 # add sprites in group
@@ -155,39 +144,40 @@ def add_sprite(sprite_group, sprites):
 
 
 def detect_collision(player, enemy):
-    collide = player.rect.colliderect(enemy.rect)
-    if collide and player.wright:
-        enemy.position['x'] += 15
-    elif collide and player.fight_arm:
-        enemy.damage = True
-        enemy.life['life'] -= 3
-    elif collide and player.fight_foot:
-        enemy.damage = True
-        enemy.life['life'] -= 5
-    elif collide and player.fight_arm_down:
-        enemy.damage = True
-        enemy.life['life'] -= 4
+    player.detect_collide(enemy)
+    enemy.detect_collide(player)
+    # collide = player.rect.colliderect(enemy.rect)
+    # if collide and player.wright:
+    #     enemy.position['x'] += 15
+    # elif collide and player.fight_arm:
+    #     enemy.damage = True
+    #     enemy.life['life'] -= 3
+    # elif collide and player.fight_foot:
+    #     enemy.damage = True
+    #     enemy.life['life'] -= 5
+    # elif collide and player.fight_arm_down:
+    #     enemy.damage = True
+    #     enemy.life['life'] -= 4
 
 
-def draw_lives(player, screen, shredder):
+def draw_lives(player, screen, enemy):
     pygame.draw.rect(screen, player.life['color'], (70, 42, player.life['life'] * 1.75, 10))
-    shredder_rect = Rect(0, 42, shredder.life['life'] * 1.75, 10)
+    shredder_rect = Rect(0, 42, enemy.life['life'] * 1.75, 10)
     shredder_rect.right = 730
-    pygame.draw.rect(screen, shredder.life['color'], shredder_rect)
+    pygame.draw.rect(screen, enemy.life['color'], shredder_rect)
 
 
 # draw screen
-def screen_draw(window, sprites_group, player, seconds, shredder):
+def screen_draw(window, sprites_group, player, seconds, enemy):
     sprites_group.draw(window)
     time = lr.fonts['time_font'].render(str(int(seconds)).zfill(2), False, (255, 255, 255))
     name_player = lr.fonts['name_font'].render(player.name, False, (255, 255, 255))
-    name_enemy = lr.fonts['name_font'].render(shredder.name, False, (255, 255, 255))
+    name_enemy = lr.fonts['name_font'].render(enemy.name, False, (255, 255, 255))
     window.blits(blit_sequence=((lr.other_images['hud'], (10, 10, 175, 50)), (player.portrait, player.portrait_rect),
-                                (shredder.portrait, shredder.portrait_rect), (time, (373, 5)),
+                                (enemy.portrait, enemy.portrait_rect), (time, (373, 5)),
                                 (name_player, (70, 20)), (name_enemy, (660, 20))))
-    draw_lives(player, window, shredder)
-    pygame.draw.rect(window, (0, 255, 0), player.rect)
-    pygame.draw.rect(window, (255, 0, 0), shredder.rect)
+    draw_lives(player, window, enemy)
+
     pygame.display.update()
 
 

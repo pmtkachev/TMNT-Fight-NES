@@ -14,17 +14,18 @@ def run_game(window, area, name):
     sprites_group = pygame.sprite.Group()
     background = Background(area_bg)
     turtle = Player(turtle, 150, 405, 10, 10, name.upper())
-    shredder = Player(lr.shredder, 650, 405, 740, 10, 'SHREDDER', False)
-    sprites = [background, shredder, turtle]
+    enemy_ = Player(lr.shredder, 650, 405, 740, 10, 'SHREDDER', False)
+    sprites = [background, enemy_, turtle]
     gf.add_sprite(sprites_group, sprites)
     seconds = 60
     area_music.play()
 
     while True:
         clock.tick(7)
-        gf.check_events(turtle, seconds, shredder)
-        gf.update_background(turtle, background, shredder)
+        gf.player_control(turtle)
+        gf.enemy_control_ai(enemy_, turtle)
+        gf.update_background(turtle, background, enemy_)
         sprites_group.update()
-        gf.detect_collision(turtle, shredder)
-        gf.screen_draw(window, sprites_group, turtle, seconds, shredder)
+        gf.detect_collision(turtle, enemy_)
+        gf.screen_draw(window, sprites_group, turtle, seconds, enemy_)
         seconds -= 0.13

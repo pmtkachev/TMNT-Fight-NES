@@ -9,9 +9,13 @@ musics_areas = {'sewer': pygame.mixer.Sound('snd/sewer.mp3'),
                 'water_front': pygame.mixer.Sound('snd/water_front.mp3'),
                 'pirate_ship': pygame.mixer.Sound('snd/pirate_ship.mp3'),
                 'down_town': pygame.mixer.Sound('snd/down_town.mp3')}
+
 sounds_fight = {'fight_arm_sound': pygame.mixer.Sound('snd/fight_arm.mp3'),
                 'fight_foot_sound': pygame.mixer.Sound('snd/fight_foot.mp3'),
-                'jump_sound': pygame.mixer.Sound('snd/jump.mp3')}
+                'jump_sound': pygame.mixer.Sound('snd/jump.mp3'),
+                'dmg_snd_turtle': pygame.mixer.Sound('snd/dmg_snd_turtle.mp3'),
+                'dmg_snd_enemy': pygame.mixer.Sound('snd/dmg_snd_enemy.mp3')}
+
 other_sounds = {'menu_select': pygame.mixer.Sound('snd/menu_select.mp3'),
                 'menu_selectel': pygame.mixer.Sound('snd/menu_selectel.mp3')}
 
@@ -67,6 +71,7 @@ shredder = {'portrait': pygame.image.load('img/sprites/enemies/shredder/shred_po
             'block_down': pygame.image.load('img/sprites/enemies/shredder/shred_block_down.png'),
             'damage': pygame.image.load('img/sprites/enemies/shredder/shred_damage.png'),
             'defeat': pygame.image.load('img/sprites/enemies/shredder/shred_defeat.png')}
+
 other_images = {'hud': pygame.image.load('img/sprites/hud.png'),
                 'splash': pygame.image.load('img/sprites/splash.png'),
                 'about': pygame.image.load('img/sprites/about.png'),
