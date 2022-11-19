@@ -1,18 +1,17 @@
 import pygame
 from main import main_menu
 import src.load_resources as lr
-from pygame.locals import *
 from random import randint
 
 
 def up_down(event, cur_pos):
-    if event.key == K_UP:
+    if event.key == pygame.K_UP:
         lr.other_sounds['menu_selectel'].play()
         return 'up'
-    if event.key == K_DOWN:
+    if event.key == pygame.K_DOWN:
         lr.other_sounds['menu_selectel'].play()
         return 'down'
-    if event.key == K_SPACE:
+    if event.key == pygame.K_SPACE:
         lr.other_sounds['menu_select'].play()
         match cur_pos:
             case 228:
@@ -35,27 +34,27 @@ def up_down(event, cur_pos):
 
 def check_menu(cur_pos=0, menu='main'):
     for event in pygame.event.get():
-        if event.type == KEYDOWN:
+        if event.type == pygame.KEYDOWN:
             match menu:
                 case 'main':
                     return up_down(event, cur_pos)
                 case 'about':
-                    if event.key == K_ESCAPE:
+                    if event.key == pygame.K_ESCAPE:
                         lr.other_sounds['menu_select'].play()
                         return 'esc'
                 case 'area':
-                    if event.key == K_ESCAPE:
+                    if event.key == pygame.K_ESCAPE:
                         lr.other_sounds['menu_select'].play()
                         return 'esc'
                     return up_down(event, cur_pos)
                 case 'turtle':
-                    if event.key == K_RIGHT:
+                    if event.key == pygame.K_RIGHT:
                         lr.other_sounds['menu_selectel'].play()
                         return 'right'
-                    if event.key == K_LEFT:
+                    if event.key == pygame.K_LEFT:
                         lr.other_sounds['menu_selectel'].play()
                         return 'left'
-                    if event.key == K_SPACE:
+                    if event.key == pygame.K_SPACE:
                         lr.other_sounds['menu_select'].play()
                         match cur_pos:
                             case 186:
@@ -67,7 +66,7 @@ def check_menu(cur_pos=0, menu='main'):
                             case 516:
                                 return 'don'
 
-                    if event.key == K_ESCAPE:
+                    if event.key == pygame.K_ESCAPE:
                         lr.other_sounds['menu_select'].play()
                         return 'esc'
 
@@ -75,66 +74,51 @@ def check_menu(cur_pos=0, menu='main'):
 # check events
 def player_control(player):
     for event in pygame.event.get():
-        if event.type == KEYDOWN:
-            if event.key == K_ESCAPE:
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
                 pygame.mixer.stop()
                 main_menu()
 
             if not player.isjump:
-                if event.key == K_a:
+                if event.key == pygame.K_a:
                     player.wleft = True
-                if event.key == K_d:
+                if event.key == pygame.K_d:
                     player.wright = True
-                if event.key == K_s:
+                if event.key == pygame.K_s:
                     player.down = True
 
-            if event.key == K_w:
+            if event.key == pygame.K_w:
                 lr.sounds_fight['jump_sound'].play()
                 player.down = False
                 player.isjump = True
-            elif event.key == K_SPACE:
+            elif event.key == pygame.K_SPACE:
                 player.block = True
-            elif event.key == K_o:
+            elif event.key == pygame.K_o:
                 player.fight_arm = True
-            elif event.key == K_p:
+            elif event.key == pygame.K_p:
                 player.fight_foot = True
 
-        if event.type == KEYUP:
-            if event.key == K_a:
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_a:
                 player.wleft = False
-            if event.key == K_d:
+            if event.key == pygame.K_d:
                 player.wright = False
-            if event.key == K_s:
+            if event.key == pygame.K_s:
                 player.down = False
-            if event.key == K_n:
-                player.fight_arm = False
-            if event.key == K_m:
-                player.fight_foot = False
-            if event.key == K_SPACE:
+            if event.key == pygame.K_SPACE:
                 player.block = False
 
 
 def enemy_control_ai(enemy, player):
-    keys = pygame.key.get_pressed()
+    rect_right = player.rect.right + randint(20, 40)
 
-    if keys[pygame.K_m]:
-        enemy.fight_arm = True
+    if enemy.rect.left >= rect_right:
+        enemy.wleft, enemy.wright = True, False
+    else:
+        enemy.wright, enemy.wleft = True, False
 
-    # if player.rect.right + 25 > enemy.rect.right:
-    #     player.flip = True
-    #     enemy.flip = True
-    # else:
-    #     player.flip = False
-    #     enemy.flip = False
-    # if enemy.rect.left >= player.rect.right + 25:
-    #     enemy.wleft = True
-    # else:
-    #     enemy.wleft = False
-
-    # if enemy.rect.left <= player.rect.right + 20:
-    #     enemy.wright = True
-    # else:
-    #     enemy.wright = False
+    if -20 <= (enemy.rect.left - rect_right) <= 20:
+        enemy.attack()
 
 
 # add sprites in group
@@ -143,26 +127,9 @@ def add_sprite(sprite_group, sprites):
         sprite_group.add(sprite)
 
 
-def detect_collision(player, enemy):
-    player.detect_collide(enemy)
-    enemy.detect_collide(player)
-    # collide = player.rect.colliderect(enemy.rect)
-    # if collide and player.wright:
-    #     enemy.position['x'] += 15
-    # elif collide and player.fight_arm:
-    #     enemy.damage = True
-    #     enemy.life['life'] -= 3
-    # elif collide and player.fight_foot:
-    #     enemy.damage = True
-    #     enemy.life['life'] -= 5
-    # elif collide and player.fight_arm_down:
-    #     enemy.damage = True
-    #     enemy.life['life'] -= 4
-
-
 def draw_lives(player, screen, enemy):
     pygame.draw.rect(screen, player.life['color'], (70, 42, player.life['life'] * 1.75, 10))
-    shredder_rect = Rect(0, 42, enemy.life['life'] * 1.75, 10)
+    shredder_rect = pygame.Rect(0, 42, enemy.life['life'] * 1.75, 10)
     shredder_rect.right = 730
     pygame.draw.rect(screen, enemy.life['color'], shredder_rect)
 

@@ -1,5 +1,6 @@
 import pygame
 from src.load_resources import sounds_fight
+from random import choice
 
 
 class Player(pygame.sprite.Sprite):
@@ -17,7 +18,6 @@ class Player(pygame.sprite.Sprite):
         self.portrait_rect.x, self.portrait_rect.y = p_x, p_y
         self.image = self.img['stay'][self.index]
         self.rect = self.image.get_rect()
-        self.flip = False
         self.wright, self.wleft = False, False
         self.down, self.isjump = False, False
         self.fight_arm, self.fight_foot = False, False
@@ -123,9 +123,6 @@ class Player(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect()
 
-        # if self.flip:
-        #     self.image = pygame.transform.flip(self.image, True, False)
-
         if self.turtle:
             self.rect.x, self.rect.bottom = self.position['x'], self.position['y']
         else:
@@ -152,3 +149,9 @@ class Player(pygame.sprite.Sprite):
             if self.image == self.img['foot_f_jump']:
                 target.damage = True
                 target.life['life'] -= 6
+
+    def attack(self):
+        self.wleft, self.wright = False, False
+        attr = choice(['down', 'isjump', 'fight_arm', 'fight_foot', 'fight_arm_down',
+                       'fight_foot_down', 'block'])
+        setattr(self, attr, True)

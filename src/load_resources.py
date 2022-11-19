@@ -14,7 +14,8 @@ sounds_fight = {'fight_arm_sound': pygame.mixer.Sound('snd/fight_arm.mp3'),
                 'fight_foot_sound': pygame.mixer.Sound('snd/fight_foot.mp3'),
                 'jump_sound': pygame.mixer.Sound('snd/jump.mp3'),
                 'dmg_snd_turtle': pygame.mixer.Sound('snd/dmg_snd_turtle.mp3'),
-                'dmg_snd_enemy': pygame.mixer.Sound('snd/dmg_snd_enemy.mp3')}
+                'dmg_snd_enemy': pygame.mixer.Sound('snd/dmg_snd_enemy.mp3'),
+                'block_snd': pygame.mixer.Sound('snd/block_snd.mp3')}
 
 other_sounds = {'menu_select': pygame.mixer.Sound('snd/menu_select.mp3'),
                 'menu_selectel': pygame.mixer.Sound('snd/menu_selectel.mp3')}

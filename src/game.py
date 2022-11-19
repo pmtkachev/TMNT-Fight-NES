@@ -25,7 +25,8 @@ def run_game(window, area, name):
         gf.player_control(turtle)
         gf.enemy_control_ai(enemy_, turtle)
         gf.update_background(turtle, background, enemy_)
+        turtle.detect_collide(enemy_)
+        enemy_.detect_collide(turtle)
         sprites_group.update()
-        gf.detect_collision(turtle, enemy_)
         gf.screen_draw(window, sprites_group, turtle, seconds, enemy_)
         seconds -= 0.13
