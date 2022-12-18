@@ -110,15 +110,18 @@ def player_control(player):
 
 
 def enemy_control_ai(enemy, player):
-    rect_right = player.rect.right + randint(20, 40)
+    distance = enemy.rect.left - player.rect.right
+    if distance <= 15 and player.wright:
+        player.position['x'] -= 15
+        enemy.position['x'] += 15
 
-    if enemy.rect.left >= rect_right:
-        enemy.wleft, enemy.wright = True, False
-    else:
-        enemy.wright, enemy.wleft = True, False
-
-    if -20 <= (enemy.rect.left - rect_right) <= 20:
-        enemy.attack()
+    # if enemy.rect.left >= rect_right:
+    #     enemy.wleft, enemy.wright = True, False
+    # else:
+    #     enemy.wright, enemy.wleft = True, False
+    #
+    # if -20 <= (enemy.rect.left - rect_right) <= 20:
+    #     enemy.attack()
 
 
 # add sprites in group

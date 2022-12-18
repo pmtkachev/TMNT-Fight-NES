@@ -129,24 +129,24 @@ class Player(pygame.sprite.Sprite):
             self.rect.right, self.rect.bottom = self.position['x'], self.position['y']
 
     def detect_collide(self, target):
-        if self.rect.colliderect(target.rect):
+        if pygame.sprite.collide_mask(self, target):
             if self.image == self.img['arm_f']:
                 target.damage = True
                 target.life['life'] -= 3
-            if self.image == self.img['arm_f_jump']:
+            elif self.image == self.img['arm_f_jump']:
                 if self.rect.y >= 146:
                     target.damage = True
                     target.life['life'] -= 4
-            if self.image == self.img['arm_f_down']:
+            elif self.image == self.img['arm_f_down']:
                 target.damage = True
                 target.life['life'] -= 2
-            if self.image == self.img['foot_f']:
+            elif self.image == self.img['foot_f']:
                 target.damage = True
                 target.life['life'] -= 5
-            if self.image == self.img['foot_f_down']:
+            elif self.image == self.img['foot_f_down']:
                 target.damage = True
                 target.life['life'] -= 4
-            if self.image == self.img['foot_f_jump']:
+            elif self.image == self.img['foot_f_jump']:
                 target.damage = True
                 target.life['life'] -= 6
 
