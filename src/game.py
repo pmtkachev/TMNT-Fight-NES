@@ -24,7 +24,6 @@ def run_game(window, area, name):
         clock.tick(7)
         gf.player_control(turtle)
         gf.enemy_control_ai(enemy_, turtle)
-        gf.update_background(turtle, background, enemy_)
         turtle.detect_collide(enemy_)
         enemy_.detect_collide(turtle)
         sprites_group.update()

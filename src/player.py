@@ -1,6 +1,6 @@
 import pygame
+
 from src.load_resources import sounds_fight
-from random import choice
 
 
 class Player(pygame.sprite.Sprite):
@@ -58,7 +58,7 @@ class Player(pygame.sprite.Sprite):
         elif self.wright:
             self.position['x'] += self.parameters['speed']
             self.image = self.img['wright'][self.index]
-            if self.position['x'] >= 730:
+            if self.position['x'] >= 700:
                 self.position['x'] -= self.parameters['speed']
 
         elif self.wleft and self.isjump:
@@ -67,12 +67,12 @@ class Player(pygame.sprite.Sprite):
             self.image = self.img['jump_flip'][self.index]
             self.jump()
             self.position['x'] -= 15
-            if self.position['x'] <= 70:
+            if self.position['x'] <= 20:
                 self.position['x'] += 15
         elif self.wleft:
             self.position['x'] -= self.parameters['speed']
             self.image = self.img['wleft'][self.index]
-            if self.position['x'] <= 70:
+            if self.position['x'] <= 20:
                 self.position['x'] += self.parameters['speed']
 
         elif self.isjump and self.fight_arm:
@@ -149,9 +149,3 @@ class Player(pygame.sprite.Sprite):
             elif self.image == self.img['foot_f_jump']:
                 target.damage = True
                 target.life['life'] -= 6
-
-    def attack(self):
-        self.wleft, self.wright = False, False
-        attr = choice(['down', 'isjump', 'fight_arm', 'fight_foot', 'fight_arm_down',
-                       'fight_foot_down', 'block'])
-        setattr(self, attr, True)

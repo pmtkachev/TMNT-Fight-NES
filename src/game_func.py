@@ -1,7 +1,7 @@
 import pygame
-from main import main_menu
+
 import src.load_resources as lr
-from random import randint
+from main import main_menu
 
 
 def up_down(event, cur_pos):
@@ -110,18 +110,19 @@ def player_control(player):
 
 
 def enemy_control_ai(enemy, player):
+    if pygame.sprite.collide_mask(enemy, player):
+        enemy.position['x'] += 20
+        player.position['x'] -= 20
     distance = enemy.rect.left - player.rect.right
-    if distance <= 15 and player.wright:
-        player.position['x'] -= 15
-        enemy.position['x'] += 15
-
-    # if enemy.rect.left >= rect_right:
-    #     enemy.wleft, enemy.wright = True, False
-    # else:
-    #     enemy.wright, enemy.wleft = True, False
-    #
-    # if -20 <= (enemy.rect.left - rect_right) <= 20:
-    #     enemy.attack()
+    if distance > 15 and enemy.life['life'] >= 50:
+        enemy.wleft = True
+    elif distance <= 15:
+        enemy.wleft = False
+    elif enemy.life['life'] <= 50:
+        enemy.wright = True
+        enemy.wleft = False
+    if enemy.position['x'] >= 700:
+        enemy.position['x'] -= enemy.parameters['speed']
 
 
 # add sprites in group
@@ -147,17 +148,4 @@ def screen_draw(window, sprites_group, player, seconds, enemy):
                                 (enemy.portrait, enemy.portrait_rect), (time, (373, 5)),
                                 (name_player, (70, 20)), (name_enemy, (660, 20))))
     draw_lives(player, window, enemy)
-
     pygame.display.update()
-
-
-# update background
-def update_background(player, background, enemy):
-    if (player.position['x'] <= 75 and player.wleft) or (enemy.position['x'] <= 80 and enemy.wleft):
-        background.rect.centerx += 20
-    elif (player.position['x'] >= 720 and player.wright) or (enemy.position['x'] >= 720 and enemy.wright):
-        background.rect.centerx -= 20
-    if background.rect.centerx >= 640:
-        background.rect.centerx -= 20
-    elif background.rect.centerx <= 160:
-        background.rect.centerx += 20
