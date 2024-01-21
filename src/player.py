@@ -156,6 +156,6 @@ class Player(pygame.sprite.Sprite):
     def attack(self):
         sleep(1)
         self.wleft, self.wright = False, False
-        attr = choice(['down', 'isjump', 'fight_arm', 'fight_foot', 'fight_arm_down',
+        attr = choice(['down', 'fight_arm', 'fight_foot', 'fight_arm_down',
                        'fight_foot_down', 'block'])
         setattr(self, attr, True)
