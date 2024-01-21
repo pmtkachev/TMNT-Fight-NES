@@ -1,4 +1,5 @@
 import pygame
+from pygame.threads import Thread
 
 import src.load_resources as lr
 from main import main_menu
@@ -114,7 +115,8 @@ def enemy_control_ai(enemy, player):
         enemy.position['x'] += 20
         player.position['x'] -= 20
     distance = enemy.rect.left - player.rect.right
-    if distance > 15 and enemy.life['life'] >= 50:
+    if (distance > 15 and enemy.life['life'] >= 50) or \
+            distance > 15 and player.life['life'] <= 50:
         enemy.wleft = True
     elif distance <= 15:
         enemy.wleft = False
@@ -123,6 +125,8 @@ def enemy_control_ai(enemy, player):
         enemy.wleft = False
     if enemy.position['x'] >= 700:
         enemy.position['x'] -= enemy.parameters['speed']
+    if distance <= 15:
+        Thread(target=enemy.attack, daemon=True).start()
 
 
 # add sprites in group

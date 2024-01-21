@@ -1,3 +1,6 @@
+from random import choice
+from time import sleep
+
 import pygame
 
 from src.load_resources import sounds_fight
@@ -149,3 +152,10 @@ class Player(pygame.sprite.Sprite):
             elif self.image == self.img['foot_f_jump']:
                 target.damage = True
                 target.life['life'] -= 6
+
+    def attack(self):
+        sleep(1)
+        self.wleft, self.wright = False, False
+        attr = choice(['down', 'isjump', 'fight_arm', 'fight_foot', 'fight_arm_down',
+                       'fight_foot_down', 'block'])
+        setattr(self, attr, True)
