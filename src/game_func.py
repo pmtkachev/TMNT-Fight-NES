@@ -1,5 +1,5 @@
 import pygame
-from pygame.threads import Thread
+from threading import Thread
 
 import src.load_resources as lr
 from main import main_menu
